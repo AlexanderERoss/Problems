@@ -39,12 +39,15 @@ def other_tower(current_towers, all_towers):
 
 def solve_towers(towers, a, b):
     move_stack = move_gen(towers[a], a, b)
+    original_move_stack = move_stack.copy()
     print(move_stack)
     c = len(move_stack)
+    print(towers)
     while c > 0:
         move = move_stack.pop()
         towers = move_block(towers, move[0], move[1])
         c -= 1
+    return original_move_stack, towers
 
 def move_gen(stack_of_blocks, indx , indx_to_move_to):
     final_move = [[indx, indx_to_move_to]]
@@ -63,5 +66,20 @@ def move_gen(stack_of_blocks, indx , indx_to_move_to):
 
 # Script to run solver
 
-a = gen_towers(4)
+a = gen_towers(5)
 solve_towers(a, 0, 1)
+
+import sys
+
+def block_print():
+    sys.stdout = open(os.devnull, 'w')
+
+def enable_print():
+    sys.stdout = sys.__stdout__
+
+for i in range(1,20+1):
+    block_print()
+    move_stack, towers = solve_towers(gen_towers(i), 0, 1)
+    enable_print()
+    print("There are " + str(len(move_stack)) + " moves for a stack of " + str(i))
+
